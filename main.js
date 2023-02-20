@@ -74,7 +74,7 @@ app.post('/review_cookie', function (req, res) {
 
 app.get('/home', function (req, res) {
     console.log('进入 home');
-    res.send('test');
+    res.send('<h1>hello world</h1>');
 });
 
 // 启动服务，指定监听的端口，在python请求时要记得加端口
