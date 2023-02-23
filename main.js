@@ -34,6 +34,7 @@ app.use(bodyParser.urlencoded({extended: true, limit: "200mb", parameterLimit:50
 
 // 以上两个只会有一个生效
 var init_localStorage;
+var last_cookie;
 
 // 创建路由
 // app.post(path, callback)
@@ -65,12 +66,24 @@ var init_localStorage;
 // });
 
 app.post('/review_cookie', function (req, res) {
-    console.log('进入 cookie 解析');
+    console.log('进入首页 cookie 解析');
     var body = req.body;
     var result = review_cookie.getCookie(body.html_text, body.req_url);
 
+    init_localStorage = result.localStorage;
+    last_cookie = result.cookie;
+
     res.send(result);
 });
+
+app.post('/review_detail_cookie', function(req, res){
+    console.log('进入详情页 cookie 解析');
+    var body = req.body;
+    var result = review_cookie.getCookie(body.html_text, body.req_url, init_localStorage, last_cookie);
+
+    res.send(result);
+
+})
 
 app.get('/home', function (req, res) {
     console.log('进入 home');
@@ -87,5 +100,4 @@ app.listen(2229,() => {
    1.控制台进到这个文件目录
    2.运行这个main.js    node main.js
  */
-
 

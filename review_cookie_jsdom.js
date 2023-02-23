@@ -1,8 +1,8 @@
 
 const jsdom = require('jsdom');
-const {JSDOM} = jsdom;
+const { JSDOM } = jsdom;
 
-function getCookie(html_text, url){
+function getCookie(html_text, url, init_localStorage, last_cookie) {
 
     const dom = new JSDOM(html_text, {
         url: url,
@@ -26,11 +26,19 @@ function getCookie(html_text, url){
             window.localStorage.setItem('$_f0', "bPDdOo9zc_ruy.7NU5ZzQJvtX80");
             window.localStorage.setItem('$_f1', "Dw3Au.0k5f2nKwZPxHMUiHhe47Q");
             window.localStorage.setItem('$_fh0', "t5vkmXwuUtqfnaX42LaFxHN6SJ9");
+
+            if (init_localStorage !== undefined) {
+                window.localStorage = init_localStorage;
+            }
+            if (last_cookie !== undefined) {
+                window.document.cookie = last_cookie;
+            }
+
             window.navigator.getBattery = function () {
                 return {
-                    then: function (func){
+                    then: function (func) {
 
-                        func({level: 1,charging:true,chargingTime:0,dischargingTime: Infinity,})
+                        func({ level: 1, charging: true, chargingTime: 0, dischargingTime: Infinity, })
 
                     }
                 }
@@ -39,10 +47,12 @@ function getCookie(html_text, url){
     });
 
     var cookie = dom.window.document.cookie;
-    // var localStorage = dom.window.localStorage;
+    var localStorage = dom.window.localStorage;
     dom.window.close();
 
-    return cookie;
+    return {
+        'cookie': cookie,
+        'localStorage': localStorage};
 
 }
 
