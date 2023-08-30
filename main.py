@@ -116,8 +116,11 @@ class CDE:
             }
 
             response_detail = self.request_detail_page(response, detail_args)
+            if response_detail.status_code != 200:
+                return
 
             info = self.parse_detail(response_detail, info)
+            print(info)
 
 
     def request_detail_page(self, menu_response, detail_args):
